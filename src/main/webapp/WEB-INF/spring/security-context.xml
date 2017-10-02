@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+	<context:component-scan base-package="uk.co.nit.cms"></context:component-scan>
+	<bean
+		class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
+
+	<security:http auto-config="true" use-expressions="true">
+		<security:custom-filter position="PRE_AUTH_FILTER"
+			ref="authTokenFilter" />
+		<security:form-login login-page="/login"
+			login-processing-url="/login" username-parameter="custom_username"
+			password-parameter="custom_password" authentication-failure-url="/login?error=true" />
+		<!-- authentication-success-handler-ref="authSuccessHandler" -->
+		<security:logout logout-url="/logout"
+			logout-success-url="/login?logout=true" />
+
+		<security:intercept-url pattern="/login"
+			access="permitAll" />
+
+		<security:intercept-url pattern="/resources/**"
+			access="permitAll" />
+		<security:intercept-url pattern="/*" 
+			access="hasRole('ROLE_ROLE1')" />
+		<security:intercept-url pattern="/home/*"
+			access="hasRole('ROLE_ROLE1')" />
+		<security:intercept-url pattern="/admin/*"
+			access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/users/*"
+			access="hasRole('ROLE_ADMIN')" />
+
+	</security:http>
+
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider
+			ref="tokenAuthProvider" />
+		<security:authentication-provider
+			user-service-ref="customUserDetailsService" />
+	</security:authentication-manager>
+
+	<bean id="authSuccessHandler" class="uk.co.nit.cms.view.security.AuthenticationHandler" />
+
+	<!-- Pre auth -->
+	<bean id="authTokenFilter" class="uk.co.nit.cms.view.security.AuthenticationTokenFilter"
+		scope="singleton" />
+	<bean id="tokenAuthProvider" class="uk.co.nit.cms.view.security.TokenAuthenticationProvider" />
+</beans>

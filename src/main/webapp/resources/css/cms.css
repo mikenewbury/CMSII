@@ -1,0 +1,42 @@
+html,body {
+	height: 95%;	
+}
+
+.container { 
+	height: 95%;
+}
+
+.img-backed {
+#	background:linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('../images/Hylas and the Nymphs.jpg') no-repeat transparent;
+#	background:linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('../images/Judith-Beheading-Holofernes.jpg') no-repeat transparent;	
+	background:linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('../images/judith-beheading-holofernes-1598.jpg') no-repeat transparent;	
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover; 
+}
+
+.row {
+	margin-bottom: 5px;
+}
+.spacer {
+	min-height: 10px;
+}
+
+.fixed-width{
+	width: 130px;
+	
+}
+
+.required:after {
+	color:#e32;
+	content:" *";
+	display:inline;
+}
+
+.error:before {
+	align-text:left
+	color:#e32;
+	conent:"! "
+	display:inline;
+}
